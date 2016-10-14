@@ -1,6 +1,6 @@
 {
   "name": "spa-webserver",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Webserver that redirects to root index.html if path is missing for client-side SPA nav",
   "author": "Baz <baz@thinkloop.com>",
   "license": "MIT",
