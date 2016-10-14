@@ -1,5 +1,5 @@
 # spa-webserver
-Webserver that redirects to root index.html if path is missing for SPA client-side nav.
+Webserver that redirects to root index.html if path is missing for client-side SPA navigation.
 
 ## Install
 ```
