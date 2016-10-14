@@ -1,0 +1,29 @@
+{
+  "name": "spa-webserver",
+  "version": "1.0.0",
+  "description": "Webserver that redirects to root index.html if path is missing (for client-side nav)",
+  "author": "Baz <baz@thinkloop.com>",
+  "license": "MIT",
+  "keywords": [
+    "webserver",
+    "spa"
+  ],
+  "main": "spa-webserver.js",
+  "homepage": "https://github.com/thinkloop/spa-webserver#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thinkloop/spa-webserver.git"
+  },
+  "bugs": {
+    "url": "https://github.com/thinkloop/spa-webserver/issues"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "file": "^0.2.2",
+    "node-static": "^0.7.9",
+    "posix-getopt": "^1.2.0"
+  }
+}
