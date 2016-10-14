@@ -26,6 +26,7 @@ while ((opt = parser.getopt()) !== undefined) {
 }
 
 // set param defaults if opts not passed in
+directory = directory || './';
 port = port || process.env.PORT || 8080;
 
 // create index of file paths to see if they exist later
