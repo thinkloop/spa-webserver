@@ -1,7 +1,7 @@
 {
   "name": "spa-webserver",
   "version": "1.0.0",
-  "description": "Webserver that redirects to root index.html if path is missing (for client-side nav)",
+  "description": "Webserver that redirects to root index.html if path is missing for client-side SPA nav",
   "author": "Baz <baz@thinkloop.com>",
   "license": "MIT",
   "keywords": [
@@ -18,7 +18,7 @@
     "url": "https://github.com/thinkloop/spa-webserver/issues"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "publish_to_npm": "clear; echo \"* * * *  PUBLISH  * * * *\"; NODE_ENV=development npm version patch && git push --follow-tags && npm publish"
   },
   "dependencies": {
     "chalk": "^1.1.3",
