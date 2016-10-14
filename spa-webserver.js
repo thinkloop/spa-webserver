@@ -47,9 +47,12 @@ execFile('find', [directory, ' -type f '], function(doNotHandleThisErr, stdout, 
 
 			return p;
 		}, {});
+
+	log(files);
+
+	startServer();
 });
 
-startServer();
 
 function startServer() {
 	var staticServer = new(nodeStatic.Server)(directory, {cache: 600});
