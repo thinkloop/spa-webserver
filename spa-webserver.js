@@ -11,6 +11,7 @@ var nodeStatic = require("node-static"),
 	directory,
 	port,
 	files,
+	indexPath,
 	indexFile;
 
 // parse passed-in cli options: -d (directory), -p (port)
@@ -44,6 +45,7 @@ execFile('find', [directory, ' -type f '], function(doNotHandleThisErr, stdout, 
 
 			// find main index file
 			if(/index.*html/.test(cleanPath)) {
+				indexPath = path;
 				indexFile = cleanPath;
 			}
 
@@ -53,7 +55,7 @@ execFile('find', [directory, ' -type f '], function(doNotHandleThisErr, stdout, 
 		}, {});
 
 	log('*********************************************************************');
-	log(indexFile);
+	log(indexPath);
 	log('*********************************************************************');
 	startServer();
 });
