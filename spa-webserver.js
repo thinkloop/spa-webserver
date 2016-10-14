@@ -33,7 +33,11 @@ port = port || process.env.PORT || 8080;
 execFile('find', [directory, ' -type f '], function(doNotHandleThisErr, stdout, stderr) {
 	files = stdout.split('\n')
 		.filter(function(path) {
-			return path.length && path !== directory;
+			if (path.length && path !== directory) {
+				log(path);
+				return true;
+			}
+			return false;
 		})
 		.reduce(function(p, path) {
 			var cleanPath = path.replace(directory, '/').replace(/[/]+/, '/');
@@ -47,8 +51,6 @@ execFile('find', [directory, ' -type f '], function(doNotHandleThisErr, stdout, 
 
 			return p;
 		}, {});
-
-	log(files);
 
 	startServer();
 });
