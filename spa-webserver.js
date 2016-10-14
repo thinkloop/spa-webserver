@@ -52,6 +52,9 @@ execFile('find', [directory, ' -type f '], function(doNotHandleThisErr, stdout, 
 			return p;
 		}, {});
 
+	log('*********************************************************************');
+	log(indexFile);
+	log('*********************************************************************');
 	startServer();
 });
 
