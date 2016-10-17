@@ -11,8 +11,7 @@ var nodeStatic = require("node-static"),
 	directory,
 	port,
 	files,
-	indexPath,
-	indexFile;
+	indexes = {};
 
 // parse passed-in cli options: -d (directory), -p (port)
 while ((opt = parser.getopt()) !== undefined) {
@@ -30,23 +29,25 @@ while ((opt = parser.getopt()) !== undefined) {
 directory = directory || './';
 port = port || process.env.PORT || 8080;
 
+log('*********************************************************************');
+
 // create index of file paths to see if they exist later
 execFile('find', [directory, ' -type f '], function(doNotHandleThisErr, stdout, stderr) {
 	files = stdout.split('\n')
 		.filter(function(path) {
 			if (path.length && path !== directory) {
-				log(path);
 				return true;
 			}
 			return false;
 		})
 		.reduce(function(p, path) {
-			var cleanPath = path.replace(directory, '/').replace(/[/]+/, '/');
+			var cleanPath = path.replace(directory, '/').replace(/[/]+/, '/'),
+				indexFolder = cleanPath.replace(/index.*html/, '');
 
 			// find main index file
-			if(/index.*html/.test(cleanPath)) {
-				indexPath = path;
-				indexFile = cleanPath;
+			if(cleanPath !== indexFolder) {
+				log(cleanPath);
+				indexes[indexFolder] = cleanPath;
 			}
 
 			p[cleanPath] = true;
@@ -54,14 +55,12 @@ execFile('find', [directory, ' -type f '], function(doNotHandleThisErr, stdout, 
 			return p;
 		}, {});
 
-	log('*********************************************************************');
-	log(indexPath);
-	log('*********************************************************************');
 	startServer();
 });
 
-
 function startServer() {
+	log('*********************************************************************');
+
 	var staticServer = new(nodeStatic.Server)(directory, {cache: 600});
 
 	http.createServer(serveHTTP).listen(port);
@@ -72,7 +71,7 @@ function startServer() {
 
 		// if the file doesn't exist, use the default index file
 		if (!files[req.url]) {
-			req.url = indexFile;
+			req.url = indexes[req.url] || indexes['/'];
 		}
 
 		res.setHeader('X-Frame-Options', 'DENY');
