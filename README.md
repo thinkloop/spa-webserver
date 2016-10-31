@@ -1,5 +1,5 @@
 # spa-webserver
-A dev webserver that redirects non-existent files to the nearest index.html. 
+A dev webserver that redirects non-existent urls to the nearest index.html. 
 This allows for SPA-style client-side navigation. 
 
 ## Install
