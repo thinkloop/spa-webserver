@@ -1,7 +1,7 @@
 # spa-webserver
 A dev webserver that redirects non-existent urls to the nearest index.html. 
 This allows for SPA-style client-side navigation. 
-For example, if a visitor goes to `//yoursite.com/products/id123`, and only a root index.html file exists, that file will be loaded with the given url, allowing the app to update its state accordingly - aka allowing for client-side nav..
+For example, if a visitor goes to `//yoursite.com/products/id123`, and only a root index.html file exists, that file will be loaded with the given url, allowing the app to update its state accordingly - aka enabling client-side nav.
 
 ## Install
 ```
