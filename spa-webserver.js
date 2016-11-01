@@ -68,6 +68,9 @@ function serveHTTP(req, res) {
 
 	// if the file doesn't exist, find the closest index file
 	if (!files[req.url]) {
+		if (req.url && req.url !== '/') {
+			log(`${req.url} does not exist`);
+		}
 		var splitURL = req.url.split('/'),
 			joinURL,
 			joinURLWithSlash;
@@ -93,7 +96,7 @@ function serveHTTP(req, res) {
 			res.end();
 		}
 		else {
-			log(req.url);
+			// log(req.url);
 		}
 	});
 }
