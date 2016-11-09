@@ -1,6 +1,6 @@
 # spa-webserver
 A development webserver (do not use in production) that redirects non-existent urls to the nearest index.html, allowing for SPA-style client-side navigation. 
-For example, if a visitor visits `//yoursite.com/products/id123`, but only a root `/index.html` file exists, spa-webserver will climb up the folder hierarchy looking for index files until it reaches the root and load that. The url in the adress bar will remain as is, allowing the app to update its state accordingly.
+For example, if a visitor visits `//yoursite.com/products/id123`, but only a root `/index.html` file exists, spa-webserver will climb up the folder hierarchy looking for index files until it reaches the root, and load it. The url in the adress bar will remain as is, allowing the app to update its state accordingly.
 
 ## Install
 ```
