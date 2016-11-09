@@ -1,7 +1,6 @@
 # spa-webserver
-A dev webserver that redirects non-existent urls to the nearest index.html. 
-This allows for SPA-style client-side navigation. 
-For example, if a visitor goes to `//yoursite.com/products/id123`, and only a root index.html file exists, that file will be loaded with the given url, allowing the app to update its state accordingly - aka enabling client-side nav.
+A development webserver (do not use in production) that redirects non-existent urls to the nearest index.html, allowing for SPA-style client-side navigation. 
+For example, if a visitor visits `//yoursite.com/products/id123`, but only a root index.html file exists, that file will be loaded with the given url, allowing the app to update its state accordingly.
 
 ## Install
 ```
@@ -29,4 +28,4 @@ Released under an MIT license.
 - [memoizerific](https://github.com/thinkloop/memoizerific/): Fast, small, efficient JavaScript memoization to memoize JS functions
 - [todo-app](https://github.com/thinkloop/todo-app/): Example todo app of extreme decoupling of react, redux and selectors
 
-## Like it? Star It
+Like it? Star It
