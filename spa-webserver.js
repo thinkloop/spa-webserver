@@ -2,6 +2,7 @@
 "use strict";
 
 var nodeStatic = require("node-static"),
+	chokidar = require('chokidar'),
 	http = require("http"),
 	chalk = require("chalk"),
 	getopt = require("posix-getopt"),
@@ -31,59 +32,66 @@ port = port || process.env.PORT || 8080;
 
 log('*********************************************************************');
 
-var indexes = {};
-var files =
-	execSync(`find ${directory} -type f`)
-	.toString()
-	.split('\n').filter(function(path) {
-		if (path.length && path !== directory) {
-			return true;
-		}
-		return false;
-	})
-	.reduce(function(p, path) {
-			var cleanPath = path.replace(directory, '/').replace(/[/]+/, '/'),
-				indexFolder = cleanPath.replace(/index.*html/, '');
-
-			// find main index file
-			if(cleanPath !== indexFolder) {
-				log(cleanPath);
-				indexes[indexFolder] = cleanPath;
-			}
-
-			p[cleanPath] = true;
-
-			return p;
-		}, {});
-
-log('*********************************************************************');
-
 var staticServer = new(nodeStatic.Server)(directory, {cache: 600});
+var indexes = {};
+var files = {};
 
-http.createServer(serveHTTP).listen(port);
+chokidar.watch(directory)
+	.on('ready', () => {
+		log('*********************************************************************');
 
-log(`http://${process.env.C9_HOSTNAME || 'localhost'}/`);
+		http.createServer(serveHTTP).listen(port);
+
+		log(`http://${process.env.C9_HOSTNAME || 'localhost'}/`);
+	})
+	.on('all', (event, path) => {
+		if (event !== 'add' && event !== 'unlink') {
+			return;
+		}
+
+		var cleanDirectory = directory.replace(/^.\//, ''),
+			cleanPath = path.replace(cleanDirectory, '/').replace(/[/]+/, '/'),
+			indexFolder = cleanPath.replace(/index.*html/, '');
+
+		if (event === 'unlink') {
+			delete files[cleanPath];
+
+			if (indexFolder && indexes[indexFolder] === cleanPath) {
+				delete indexes[indexFolder];
+			}
+		}
+
+		if(cleanPath !== indexFolder) {
+			log(cleanPath);
+			indexes[indexFolder] = cleanPath;
+		}
+
+		files[cleanPath] = true;
+	});
 
 function serveHTTP(req, res) {
 
 	// if the file doesn't exist, find the closest index file
 	if (!files[req.url]) {
-		if (req.url && req.url !== '/') {
-			log(`${req.url} does not exist`);
-		}
-		var splitURL = req.url.split('/'),
-			joinURL,
-			joinURLWithSlash;
-
-		splitURL.push('dummy element to be popped on the first iteration');
+		var logic = [],
+			originalURL = `${req.url}/`.replace(/[/]+/g, '/'),
+			splitURL = originalURL.split('/'),
+			joinURL;
 
 		do {
 			splitURL.pop();
-			joinURL = splitURL.join('/'),
-			joinURLWithSlash = `${joinURL}/`.replace(/[/]+/g, '/');
-			req.url = indexes[joinURL] || indexes[joinURLWithSlash];
+			joinURL = `${splitURL.join('/')}/`.replace(/[/]+/g, '/');
+			req.url = indexes[joinURL];
+			logic.push(joinURL);
+			//console.log(splitURL);
 		}
 		while (!req.url && splitURL.length);
+
+		if (!indexes[originalURL] && req.url) {
+			logic.pop();
+			logic.push(req.url);
+			log(logic.join(' >>> '));
+		}
 	}
 
 	res.setHeader('X-Frame-Options', 'DENY');
